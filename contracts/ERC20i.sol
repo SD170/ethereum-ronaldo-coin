@@ -21,8 +21,6 @@ interface ERC20i {
     );
 
     // methods
-
-    
     // optional
     function name() external view returns (string memory);
 
@@ -31,6 +29,7 @@ interface ERC20i {
 
     // optional
     function decimals() external view returns (uint8);
+
 
     function totalSupply() external view returns (uint256);
 
