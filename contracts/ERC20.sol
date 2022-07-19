@@ -13,23 +13,21 @@ contract ERC20 is ERC20i {
     uint8 private tokenDecimals;
     uint256 private tokenTotalSupply;
     // address public tokenOwner;
-    mapping(address => uint256) public balances;
-    mapping(address => mapping(address => uint256)) public allowances;
+    mapping(address => uint256) private balances;
+    mapping(address => mapping(address => uint256)) private allowances;
 
-    constructor(
-        string memory _tokenName,
-        string memory _tokenSymbol,
-        uint8 _tokenDecimals
-    ) {
+    constructor(string memory _tokenName, string memory _tokenSymbol)
+    // uint8 _tokenDecimals
+    {
         // tokenOwner = msg.sender;
         tokenName = _tokenName;
         tokenSymbol = _tokenSymbol;
         tokenTotalSupply = 0;
         tokenDecimals = 18; // convention is 18 like Wei
-        if (_tokenDecimals != 0) {
-            // if provided then set tokenDecimals
-            tokenDecimals = _tokenDecimals;
-        }
+        // if (_tokenDecimals != 0) {
+        //     // if provided then set tokenDecimals
+        //     tokenDecimals = _tokenDecimals;
+        // }
     }
 
     function name() public view override returns (string memory) {
@@ -78,9 +76,8 @@ contract ERC20 is ERC20i {
             "not enough allowance"
         );
         allowances[_from][msg.sender] -= _value;
-        balances[_to] += _value;
 
-        makeTransfer(msg.sender, _to, _value);
+        makeTransfer(_from, _to, _value);
 
         return true;
     }
