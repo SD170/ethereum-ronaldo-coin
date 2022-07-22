@@ -1,5 +1,7 @@
-const ERC20 = artifacts.require("ERC20");
+const RonaldoCoin = artifacts.require("RonaldoCoin");
+const RonaldoCoinCapped = artifacts.require("RonaldoCoinCapped");
 
-module.exports = function (deployer, network, accounts) {
-  deployer.deploy(ERC20, "Ronaldo", "RON");
+module.exports = async function (deployer, network, accounts) {
+  await deployer.deploy(RonaldoCoin, "Ronaldo", "RO2");
+  await deployer.deploy(RonaldoCoinCapped, "RonaldoCoin", "RON");
 };

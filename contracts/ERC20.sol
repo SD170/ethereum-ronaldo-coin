@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.12;
 
 /*
 Contract for the ERC 20 Token standard: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md.
@@ -85,10 +85,11 @@ contract ERC20 is ERC20i {
     function approve(address _spender, uint256 _value)
         public
         override
-        returns (bool)
+        returns (bool success)
     {
         allowances[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
+        return true;
     }
 
     function allowance(address _owner, address _spender)

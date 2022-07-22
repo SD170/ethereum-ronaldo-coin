@@ -28,20 +28,8 @@ contract("RonaldoCoin", (accounts) => {
     /* before each context */
   });
 
-  // it('should revert if ...', () => {
-  //     return ERC20.deployed()
-  //         .then(instance => {
-  //             return instance.publicOrExternalContractMethod(argument1, argument2, {from:externalAddress});
-  //         })
-  //         .then(result => {
-  //             assert.fail();
-  //         })
-  //         .catch(error => {
-  //             assert.notEqual(error.message, "assert.fail()", "Reason ...");
-  //         });
-  //     });
 
-  context("testgroup - security tests - description...", () => {
+  context("testgroup - transaction tests", () => {
     let newRonaldoCoin;
     //deploy a new contract
     before(async () => {
@@ -66,7 +54,7 @@ contract("RonaldoCoin", (accounts) => {
     it("sending all tokens from creatorAddress to firstOwnerAddress", async () => {
       const totalTokenOfCreator = await newRonaldoCoin.balanceOf(
         creatorAddress
-      );
+      );  // no need for toString(), as js keeps the returns as a object
       //   console.log(totalTokenOfCreator, "totalTokenOfCreator");
       const txnRes = await newRonaldoCoin.transfer(
         firstOwnerAddress,
@@ -80,7 +68,7 @@ contract("RonaldoCoin", (accounts) => {
         return (
           event._from == creatorAddress &&
           event._to == firstOwnerAddress &&
-          event._value.toNumber() == totalTokenOfCreator
+          event._value.toString() == totalTokenOfCreator  // can't do toNumber() as js can't hold numbers that big
         );
       });
     });
@@ -112,7 +100,7 @@ contract("RonaldoCoin", (accounts) => {
         return (
           event._owner == firstOwnerAddress &&
           event._spender == secondOwnerAddress &&
-          event._value.toNumber() == totalTokenOfFOwner
+          event._value.toString() == totalTokenOfFOwner
         );
       });
 
@@ -153,20 +141,28 @@ contract("RonaldoCoin", (accounts) => {
         }
       );
 
-        await truffleAssert.eventEmitted(txnRes, "Transfer", (event) => {
-          // since numeric values in javascript do not have enough precision they are wrapped in an BN object. We can use those BN methods.
-          // see BN docs: https://github.com/indutny/bn.js/#utilities
-          return (
-            event._from == firstOwnerAddress &&
-            event._to == fourthOwnerAddress &&
-            event._value.toNumber() == totalAllowanceOfSOwner
-          );
-        });
+      await truffleAssert.eventEmitted(txnRes, "Transfer", (event) => {
+        // since numeric values in javascript do not have enough precision they are wrapped in an BN object. We can use those BN methods.
+        // see BN docs: https://github.com/indutny/bn.js/#utilities
+        return (
+          event._from == firstOwnerAddress &&
+          event._to == fourthOwnerAddress &&
+          event._value.toString() == totalAllowanceOfSOwner
+        );
+      });
 
-        // new balance of the fourthOwnerAddress should be eql to totalAllowanceOfSOwner.
-        const newBalOfCreator = await newRonaldoCoin.balanceOf(fourthOwnerAddress)
-        assert.equal(totalAllowanceOfSOwner.toString(), newBalOfCreator.toString())
+      // new balance of the fourthOwnerAddress should be eql to totalAllowanceOfSOwner.
+      const newBalOfCreator = await newRonaldoCoin.balanceOf(
+        fourthOwnerAddress
+      );
+      assert.equal(
+        totalAllowanceOfSOwner,
+        newBalOfCreator.toString()
+      );
     });
+  });
 
+  context("testgroup - security tests - description...", () => {
+    
   });
 });
