@@ -30,13 +30,13 @@ contract RonaldoCoinCapped is ERC20 {
             "No need to pay that much!! donate to charity instead."
         );
         require(
-            balanceOf(tokenOwner) >= 0,
+            balanceOf(tokenOwner) > 0,
             "All 10 RonaldoCoin are minted. You're late."
         );
-        require(
-            balanceOf(msg.sender) == 0,
-            "You can own at max 1 RonaldoCoin, not more. Don't be greedy"
-        );
+        // require(
+        //     balanceOf(msg.sender) == 0,
+        //     "You can own at max 1 RonaldoCoin, not more. Don't be greedy"
+        // );
 
         makeTransfer(tokenOwner, msg.sender, 1 * 10**uint256(decimals()));
         // we'll send 1 coin, thich is represented by n * 10**uint256(decimals()) internally. n=1
