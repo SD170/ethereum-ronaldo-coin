@@ -14,7 +14,7 @@ contract RonaldoCoinCapped is ERC20 {
         ERC20(tokenName, tokenSymbol)
     {
         tokenOwner = msg.sender;
-        uint8 tokenMinted = 10; // I want to keep the cap to 10. Change it if you want to mint more
+        uint8 tokenMinted = 100; // I want to keep the cap to 10. Change it if you want to mint more
         mintToken(msg.sender, tokenMinted * 10**uint256(decimals()));
     }
 
