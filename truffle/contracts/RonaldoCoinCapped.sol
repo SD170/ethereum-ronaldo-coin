@@ -18,6 +18,11 @@ contract RonaldoCoinCapped is ERC20 {
         mintToken(msg.sender, tokenMinted * 10**uint256(decimals()));
     }
 
+    // get the total token left 
+    function getTokenLeft() public view returns (uint256) {
+        return balanceOf(tokenOwner) / 10**uint256(decimals());
+    }
+
     // this method recieve ether by default when someone sends it.
     // so it should a fallback function, or it should have a name of receive() with external payable modifiere and without function keyword
     receive() external payable {

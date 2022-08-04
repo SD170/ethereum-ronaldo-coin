@@ -3,9 +3,10 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import getWeb3Instance from "../lib/getWeb3Instance";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import Web3 from "web3";
 import getEstimations from "../lib/getEstimations";
+import { ownerData } from "../interfaces";
 
 const RONALDOCOINPRICE = "0.0001"; // in ether
 
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
   const [accounts, setAccounts] = useState<Array<string>>([]); // maybe ref
   const [tokenContract, setTokenContract] = useState(null); // maybe ref
   const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [postBuyModal, setPostBuyModal] = useState(false);
 
   const web3Context = useCallback(async () => {
     try {
@@ -42,7 +44,8 @@ const Home: NextPage = () => {
     //     setIsMMConnected(true);
     //   }
     // });
-  }, [web3Context, ]);
+  }, [web3Context]);
+
 
   // useEffect(() => {
   //   interface ProviderMessage {
@@ -66,10 +69,7 @@ const Home: NextPage = () => {
   //     }
   //   );
 
-    
   // }, [web3Context, txnId]);
-
-
 
   const buyToken = async () => {
     if (tokenContract && web3 && accounts.length) {
@@ -107,12 +107,16 @@ const Home: NextPage = () => {
             // fromBlock:1,
             // @ts-ignore
             address: tokenContract._address,
-            topics: ["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"]
+            topics: [
+              "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+            ] // Keccak-256 hash of Transfer event
           },
           function (error, result) {
             if (!error) {
               console.log("result of logs", result);
-              alert("Thanks for buying")
+              alert("Thanks for buying");
+              // show modal
+              setPostBuyModal(true);
             }
           }
         );
@@ -123,6 +127,26 @@ const Home: NextPage = () => {
         console.log(error);
       }
     }
+  };
+
+  const handlePostBuy = async (e: FormEvent) => {
+    e.preventDefault;
+    const form = new FormData(e.target as HTMLFormElement);
+    const formData = Object.fromEntries(form.entries());
+    formData.address = accounts[0]; // adding current account
+    console.log('formData',formData);
+
+    const res = await fetch("/api/addOwner", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const result = await res.json();
+    console.log('result of addOwner api', result);
+    setPostBuyModal(false);
   };
 
   return (
@@ -139,6 +163,13 @@ const Home: NextPage = () => {
       <button disabled={!isMMConnected} onClick={buyToken}>
         buy a ronaldocoin
       </button>
+
+      <div className="" hidden={!postBuyModal}>
+        <form onSubmit={handlePostBuy}>
+          <input type="text" name="name" />
+          <input type="text" name="note" />
+        </form>
+      </div>
 
       {/* <main className={styles.main}>
         <h1 className={styles.title}>
