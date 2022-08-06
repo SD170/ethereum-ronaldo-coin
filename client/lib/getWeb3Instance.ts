@@ -1,6 +1,4 @@
 import Web3 from "web3";
-import getContractInstance from './getContractInstance';
-import contractInterface from "../../truffle/build/contracts/RonaldoCoinCapped.json";
 const createWeb3Instance = async () => {
 
     if (!window.ethereum) {
@@ -15,9 +13,9 @@ const createWeb3Instance = async () => {
         });
         console.log(web3Instance);
         if (accountsInstance.length > 0) {
-            const contractInstance = await getContractInstance(web3Instance,contractInterface)
-            
-            return {web3Instance,accountsInstance,contractInstance};
+            return { web3Instance, accountsInstance };
+
+
         } else {
             throw new Error("No address on meamask");
         }
@@ -31,7 +29,7 @@ const createWeb3Instance = async () => {
 
 const getWeb3Instance = async () => {
     if (document.readyState === 'complete') {
-        
+
         try {
             return await createWeb3Instance();
         } catch (error: any) {

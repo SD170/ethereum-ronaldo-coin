@@ -1,5 +1,5 @@
 import { Repository } from "redis-om";
-import { schema, Owner } from "./Schama";
+import { schema, Owner } from "./Schema";
 import { connect, client } from "./redisConfig";
 
 
@@ -9,11 +9,13 @@ export const createOwner = async (data) => {
     // connect if not connected
     await connect();
 
+
     // @ts-ignore
-    const repository = new Repository<Owner>(schema, client);
-
+    const repository = client.fetchRepository(schema)
+    console.log("data",data);
     const owner = repository.createEntity(data);
-
+    
+    console.log("owner",owner);
     // id = <uniqueId>
     const id = await repository.save(owner);
 
@@ -30,7 +32,7 @@ export const getOwners = async () => {
     await connect();
 
     // @ts-ignore
-    const repository = new Repository<Owner>(schema, client);
+    const repository = client.fetchRepository(schema);
 
     // need to build index to search [drop index if the schema is updated]
     try {

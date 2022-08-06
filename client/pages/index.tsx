@@ -6,7 +6,11 @@ import getWeb3Instance from "../lib/getWeb3Instance";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import Web3 from "web3";
 import getEstimations from "../lib/getEstimations";
-import { ownerData } from "../interfaces";
+import ListTokens from "../components/ListTokens";
+import { ownerData, ownerDataRedis } from "../interfaces";
+import getContractInstance from "../lib/getContractInstance";
+import contractInterface from "../../truffle/build/contracts/RonaldoCoinCapped.json";
+// import { closeConnection } from '../lib/redis/services';
 
 const RONALDOCOINPRICE = "0.0001"; // in ether
 
@@ -16,6 +20,8 @@ const Home: NextPage = () => {
   const [tokenContract, setTokenContract] = useState(null); // maybe ref
   const [web3, setWeb3] = useState<Web3 | null>(null);
   const [postBuyModal, setPostBuyModal] = useState(false);
+  const [tokenOwners, setTokenOwners] = useState<ownerDataRedis[]>([]);
+  const [tokenLeft, setTokenLeft] = useState<number | null>(null);
 
   const web3Context = useCallback(async () => {
     try {
@@ -24,9 +30,8 @@ const Home: NextPage = () => {
         await getWeb3Instance();
       setWeb3(web3Instance);
       setAccounts(accountsInstance);
-      setTokenContract(contractInstance);
       if (accountsInstance > 0) {
-        console.log(accountsInstance);
+        // console.log(accountsInstance);
         setIsMMConnected(true);
       }
     } catch (error) {
@@ -46,6 +51,35 @@ const Home: NextPage = () => {
     // });
   }, [web3Context]);
 
+  const contractContext = useCallback(async () => {
+    if (web3) {
+      const contractInstance = await getContractInstance(
+        web3,
+        contractInterface
+      );
+      // @ts-ignore
+      setTokenContract(contractInstance);
+    }
+  }, [web3]);
+
+  useEffect(() => {
+    contractContext();
+  }, [contractContext]);
+
+  const getAllOwners = useCallback(async () => {
+    const res = await fetch("/api/getOwners", {
+      method: "GET"
+    });
+
+    const result = await res.json();
+    // console.log("result of getAllOwners api", result);
+    setTokenOwners(result);
+  }, []); // setTokenOwners is already memoised as setState()'s are as per react. So no need to include it in the dependency array
+
+  useEffect(() => {
+    console.log("tokenOwners", tokenOwners);
+    getAllOwners();
+  }, [getAllOwners]);
 
   // useEffect(() => {
   //   interface ProviderMessage {
@@ -71,7 +105,8 @@ const Home: NextPage = () => {
 
   // }, [web3Context, txnId]);
 
-  const buyToken = async () => {
+  const buyToken = useCallback(async () => {
+    console.log(tokenContract && web3 && accounts.length);
     if (tokenContract && web3 && accounts.length) {
       try {
         const { gas, gasPrice } = await getEstimations(
@@ -113,28 +148,27 @@ const Home: NextPage = () => {
           },
           function (error, result) {
             if (!error) {
-              console.log("result of logs", result);
+              // console.log("result of logs", result);
               alert("Thanks for buying");
               // show modal
+              getCoinLeft();
               setPostBuyModal(true);
             }
           }
         );
-        // console.log(tId, typeof tId);
-        // console.log(typeof tId);
-        // setTxnId(tId);
       } catch (error) {
         console.log(error);
       }
     }
-  };
+  }, [tokenContract, web3, accounts]);
 
   const handlePostBuy = async (e: FormEvent) => {
-    e.preventDefault;
+    e.preventDefault();
     const form = new FormData(e.target as HTMLFormElement);
     const formData = Object.fromEntries(form.entries());
     formData.address = accounts[0]; // adding current account
-    console.log('formData',formData);
+    formData.createdAt = Date.now().toString(); // adding date
+    console.log("formData", formData);
 
     const res = await fetch("/api/addOwner", {
       method: "POST",
@@ -145,9 +179,24 @@ const Home: NextPage = () => {
     });
 
     const result = await res.json();
-    console.log('result of addOwner api', result);
+    console.log("result of addOwner api", result);
+    // rerendering all owners
+    await getAllOwners();
     setPostBuyModal(false);
   };
+
+  const getCoinLeft = useCallback(async () => {
+    console.log("getCoinLeft");
+    if (tokenContract) {
+      // @ts-ignore
+      const tokenLeftCount = await tokenContract.methods.getTokenLeft().call();
+      setTokenLeft(tokenLeftCount);
+    }
+  }, [tokenContract]);
+
+  useEffect(() => {
+    getCoinLeft();
+  }, [buyToken, getCoinLeft]);
 
   return (
     <div className={styles.container}>
@@ -168,8 +217,13 @@ const Home: NextPage = () => {
         <form onSubmit={handlePostBuy}>
           <input type="text" name="name" />
           <input type="text" name="note" />
+          <input type="submit" value={"Save"} />
+          <input type="submit" value={"Cancle"} />
         </form>
       </div>
+
+      <div className="">tokenLeft: {tokenLeft}</div>
+      <ListTokens tokenOwners={tokenOwners} />
 
       {/* <main className={styles.main}>
         <h1 className={styles.title}>

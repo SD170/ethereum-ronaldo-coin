@@ -7,7 +7,8 @@ const schema = new Schema(
     {
         address: { type: 'string' },
         name: { type: 'string' },
-        note: { type: 'string' }
+        note: { type: 'string' },
+        createdAt: { type: 'date', sortable:true }
     }, {
     dataStructure: 'JSON'
 }
