@@ -46,7 +46,6 @@ const Home: NextPage = () => {
     // if(window.ethereum.selectedAddress){
     //   setIsMMConnected(true);
     // }
-
   }, []);
 
   // useEffect(() => {
