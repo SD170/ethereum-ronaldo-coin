@@ -10,7 +10,7 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
     <>
       <div className="">
         {tokenDetails.entityId} - 
-        {tokenDetails.hashedAddress} -
+        {tokenDetails.address} -
         {tokenDetails.name} -
         {tokenDetails.note} -
       </div>

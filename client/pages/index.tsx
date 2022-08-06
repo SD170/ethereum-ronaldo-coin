@@ -26,8 +26,7 @@ const Home: NextPage = () => {
   const web3Context = useCallback(async () => {
     try {
       // @ts-ignore
-      const { web3Instance, accountsInstance, contractInstance } =
-        await getWeb3Instance();
+      const { web3Instance, accountsInstance } = await getWeb3Instance();
       setWeb3(web3Instance);
       setAccounts(accountsInstance);
       if (accountsInstance > 0) {
@@ -38,18 +37,30 @@ const Home: NextPage = () => {
       console.error(error);
     }
   }, []); // setIsMMConnected is already memoised as setState()'s are as per react. So no need to include it in the dependency array
+
   useEffect(() => {
-    web3Context();
-    /**
-     * for listening to change in accounts
-     */
-    // window.ethereum.on("accountsChanged", (accounts: Array<string>) => {
-    //   if (accounts.length > 0) {
-    //     // console.log(accounts);
-    //     setIsMMConnected(true);
-    //   }
-    // });
-  }, [web3Context]);
+    // web3Context();
+    // console.log("objectobjectobject", web3);
+    // // @ts-ignore
+    // console.log(window.ethereum.selectedAddress);
+    // if(window.ethereum.selectedAddress){
+    //   setIsMMConnected(true);
+    // }
+
+  }, []);
+
+  // useEffect(() => {
+  //   web3Context();
+  //   /**
+  //    * for listening to change in accounts
+  //    */
+  //   // window.ethereum.on("accountsChanged", (accounts: Array<string>) => {
+  //   //   if (accounts.length > 0) {
+  //   //     // console.log(accounts);
+  //   //     setIsMMConnected(true);
+  //   //   }
+  //   // });
+  // }, [web3Context]);
 
   const contractContext = useCallback(async () => {
     if (web3) {
@@ -196,7 +207,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     getCoinLeft();
-  }, [buyToken, getCoinLeft]);
+  }, [getCoinLeft]);
 
   return (
     <div className={styles.container}>

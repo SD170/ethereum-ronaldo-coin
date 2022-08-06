@@ -1,14 +1,14 @@
 
 
 export type ownerData = {
-    hashedAddress?: string,
+    address?: string,
     name?: string | null,
     note?: string | null,
     createdAt?: string
 }
 
 export type ownerDataRedis = {
-    hashedAddress?: string,
+    address?: string,
     name?: string | null,
     note?: string | null,
     entityId?: string

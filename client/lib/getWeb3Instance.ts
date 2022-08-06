@@ -11,7 +11,7 @@ const createWeb3Instance = async () => {
         const accountsInstance = await web3.currentProvider.request({
             method: "eth_requestAccounts"
         });
-        console.log(web3Instance);
+        // console.log(web3Instance);
         if (accountsInstance.length > 0) {
             return { web3Instance, accountsInstance };
 
