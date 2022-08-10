@@ -10,7 +10,12 @@ export default async function handler(
 ) {
     if (req.method === 'GET') {
 
-        const owners = await getOwners();
-        res.status(200).json(owners);
+        try {
+            const owners = await getOwners();
+            res.status(200).json(owners);
+            
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

@@ -11,7 +11,7 @@ const connect = async () => {
     console.log("sssssssssssssssssssssssssssssssssssssssssssss");
     if (!client.isOpen()) {
         try {
-            await client.open(process.env.REDIS_URL);
+            await client.open(process.env.REDIS_URL_LOCAL);
             
         } catch (error) {
             console.error('Error connecting to redis cloud: ', error);
