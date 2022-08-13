@@ -1,13 +1,21 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from 'react';
 interface ToastProps {
   message: string;
   type?: string;
+  closeToast: ()=>void;
 }
 
 const Toast: FunctionComponent<ToastProps> = ({
   message,
-  type = "success"
+  type = "success",
+  closeToast
 }) => {
+
+  useEffect(() => {
+    const closeTimer = setTimeout(() => closeToast(), 5000);
+    return () => clearTimeout(closeTimer);
+  }, [closeToast]);
+
   return (
     <>
       <div

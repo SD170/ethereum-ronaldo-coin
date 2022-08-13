@@ -18,7 +18,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
                 //   height={24}
               />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                RONALDO COIN
+                RONALDO<label className='text-red-600'>COIN</label>
               </span>
             </a>
           </Link>

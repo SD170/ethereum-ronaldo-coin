@@ -13,7 +13,10 @@ import getContractInstance from "../lib/getContractInstance";
 import contractInterface from "../../truffle/build/contracts/RonaldoCoinCapped.json";
 import Navbar from "../components/Navbar";
 // import { closeConnection } from '../lib/redis/services';
-import Toast from '../components/Toast';
+import { ToastContainer, toast, ToastOptions, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Toast from "../components/Toast";
+import PostBuyModal from '../components/PostBuyModal';
 
 const RONALDOCOINPRICE = "0.0001"; // in ether
 
@@ -36,11 +39,32 @@ const Home: NextPage = () => {
         // console.log(accountsInstance);
         setIsMMConnected(true);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+        showToast(error.message, "error")
     }
   }, []); // setIsMMConnected is already memoised as setState()'s are as per react. So no need to include it in the dependency array
 
+  const showToast = (message:string, type:string = "info") => {
+
+    const options:ToastOptions = {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      transition: Flip
+    }
+    if(type === "error"){
+      toast.error(message, options);
+    }else if(type === "success"){
+      toast.success(message, options);
+    }else{
+      toast.info(message, options);
+    }
+  };
   useEffect(() => {
     // web3Context();
     // console.log("objectobjectobject", web3);
@@ -80,16 +104,15 @@ const Home: NextPage = () => {
   }, [contractContext]);
 
   const getAllOwners = useCallback(async () => {
-
      const res = await fetch("/api/getOwners", {
        method: "GET"
      });
- 
+
      const result = await res.json();
      console.log("result of getAllOwners api", result);
-   
-   
-     // setTokenOwners([
+     setTokenOwners(result);
+
+    // setTokenOwners([
     //   {
     //     address: "0xf99bf87663f0e27619b914ef7696e9e352395977",
     //     createdAt: "null",
@@ -173,15 +196,17 @@ const Home: NextPage = () => {
           function (error, result) {
             if (!error) {
               // console.log("result of logs", result);
-              alert("Thanks for buying");
+              // alert("Thanks for buying");
+              showToast("Thanks for buying RON", "success")
               // show modal
               getCoinLeft();
               setPostBuyModal(true);
             }
           }
         );
-      } catch (error) {
+      } catch (error:any) {
         console.log(error);
+        showToast(error.message, "error")
       }
     }
   }, [tokenContract, web3, accounts]);
@@ -206,6 +231,8 @@ const Home: NextPage = () => {
     console.log("result of addOwner api", result);
     // rerendering all owners
     await getAllOwners();
+
+    showToast("You can see your RON now", "success");
     setPostBuyModal(false);
   };
 
@@ -230,24 +257,40 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Toast message="sss" />
+      {/* <Toast message="sss" /> */}
+      <ToastContainer />
       <div className="flex justify-center my-5">
-      <button type="button" disabled={isMMConnected} onClick={web3Context} className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed">
-      <Image src="/metamask.svg" alt="metamask logo " width={72} height={50} />
-        Connect with MetaMask
-      </button>
-      
-      <button type="button" disabled={!isMMConnected} onClick={buyToken} className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed ">
-        <img
-          src="/RON-logo.gif"
-          // className="mr-3 h-6 sm:h-9"
-          className="mr-2 -ml-1 w-10 h-11" 
-          alt="Flowbite Logo"
-          //   width={36}
-          //   height={24}
-        />
-        Buy a RON
-      </button>
+        <button
+          type="button"
+          disabled={isMMConnected}
+          onClick={web3Context}
+          className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed"
+        >
+          <Image
+            src="/metamask.svg"
+            alt="metamask logo "
+            width={72}
+            height={50}
+          />
+          Connect with MetaMask
+        </button>
+
+        <button
+          type="button"
+          disabled={!isMMConnected}
+          onClick={buyToken}
+          className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed "
+        >
+          <img
+            src="/RON-logo.gif"
+            // className="mr-3 h-6 sm:h-9"
+            className="mr-2 -ml-1 w-10 h-11"
+            alt="Flowbite Logo"
+            //   width={36}
+            //   height={24}
+          />
+          Buy a RON
+        </button>
 
         {/* <button className="" disabled={isMMConnected} onClick={web3Context}>
           connect to metamask
@@ -257,72 +300,20 @@ const Home: NextPage = () => {
         </button> */}
       </div>
 
-      <div className="" hidden={!postBuyModal}>
+      {/* <div className="" hidden={!postBuyModal}>
         <form onSubmit={handlePostBuy}>
           <input type="text" name="name" />
           <input type="text" name="note" />
           <input type="submit" value={"Save"} />
           <input type="submit" value={"Cancle"} />
         </form>
-      </div>
+      </div> */}
+      {postBuyModal && <PostBuyModal handlePostBuy={handlePostBuy} />}
+      
 
       <div className="">tokenLeft: {tokenLeft}</div>
       <ListTokens tokenOwners={tokenOwners} />
-      
 
-      {/* <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
     </div>
   );
 };

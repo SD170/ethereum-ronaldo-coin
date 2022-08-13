@@ -25,14 +25,14 @@ const ListTokens: FunctionComponent<EachTokenProps> = ({tokenOwners}) => {
   // }, [getAllOwners]);
 
   return (
-    <>
+    <div className="flex flex-wrap justify-around">
     
       {tokenOwners.map((to) => (
         <span key={to.entityId}>
           <EachToken tokenDetails={to} />
         </span>
       ))}
-    </>
+    </div>
   );
 };
 
