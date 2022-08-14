@@ -12,10 +12,10 @@ export const createOwner = async (data) => {
 
     // @ts-ignore
     const repository = client.fetchRepository(schema)
-    console.log("data",data);
+    // console.log("data",data);
     const owner = repository.createEntity(data);
     
-    console.log("owner",owner);
+    // console.log("owner",owner);
     // id = <uniqueId>
     const id = await repository.save(owner);
 
@@ -33,7 +33,6 @@ export const getOwners = async () => {
 
     // @ts-ignore
     const repository = client.fetchRepository(schema);
-
     // need to build index to search [drop index if the schema is updated]
     try {
         await repository.dropIndex();
@@ -44,7 +43,7 @@ export const getOwners = async () => {
 
     
 
-    const owners = await repository.search().return.all();
+    const owners = await repository.search().sortDescending('createdAt').return.all();
 
     return owners;
 }

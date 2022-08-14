@@ -16,7 +16,7 @@ import Navbar from "../components/Navbar";
 import { ToastContainer, toast, ToastOptions, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Toast from "../components/Toast";
-import PostBuyModal from '../components/PostBuyModal';
+import PostBuyModal from "../components/PostBuyModal";
 
 const RONALDOCOINPRICE = "0.0001"; // in ether
 
@@ -41,13 +41,12 @@ const Home: NextPage = () => {
       }
     } catch (error: any) {
       console.error(error);
-        showToast(error.message, "error")
+      showToast(error.message, "error");
     }
   }, []); // setIsMMConnected is already memoised as setState()'s are as per react. So no need to include it in the dependency array
 
-  const showToast = (message:string, type:string = "info") => {
-
-    const options:ToastOptions = {
+  const showToast = (message: string, type: string = "info") => {
+    const options: ToastOptions = {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -56,12 +55,12 @@ const Home: NextPage = () => {
       draggable: true,
       progress: undefined,
       transition: Flip
-    }
-    if(type === "error"){
+    };
+    if (type === "error") {
       toast.error(message, options);
-    }else if(type === "success"){
+    } else if (type === "success") {
       toast.success(message, options);
-    }else{
+    } else {
       toast.info(message, options);
     }
   };
@@ -104,13 +103,13 @@ const Home: NextPage = () => {
   }, [contractContext]);
 
   const getAllOwners = useCallback(async () => {
-     const res = await fetch("/api/getOwners", {
-       method: "GET"
-     });
+    const res = await fetch("/api/getOwners", {
+      method: "GET"
+    });
 
-     const result = await res.json();
-     console.log("result of getAllOwners api", result);
-     setTokenOwners(result);
+    const result = await res.json();
+    console.log("result of getAllOwners api", result);
+    setTokenOwners(result);
 
     // setTokenOwners([
     //   {
@@ -197,16 +196,16 @@ const Home: NextPage = () => {
             if (!error) {
               // console.log("result of logs", result);
               // alert("Thanks for buying");
-              showToast("Thanks for buying RON", "success")
+              showToast("Thanks for buying RON", "success");
               // show modal
               getCoinLeft();
               setPostBuyModal(true);
             }
           }
         );
-      } catch (error:any) {
+      } catch (error: any) {
         console.log(error);
-        showToast(error.message, "error")
+        showToast(error.message, "error");
       }
     }
   }, [tokenContract, web3, accounts]);
@@ -217,6 +216,8 @@ const Home: NextPage = () => {
     const formData = Object.fromEntries(form.entries());
     formData.address = accounts[0]; // adding current account
     formData.createdAt = Date.now().toString(); // adding date
+    formData.name = formData.name ? formData.name : "Anonymous";
+    formData.note = formData.note ? formData.note : "Empty";
     console.log("formData", formData);
 
     const res = await fetch("/api/addOwner", {
@@ -272,9 +273,13 @@ const Home: NextPage = () => {
             width={72}
             height={50}
           />
-          Connect with MetaMask
+          {isMMConnected?<>Connected....</>:<>Connect with MetaMask</>}
         </button>
-
+        <div onClick={()=>{
+          if (!isMMConnected){
+            showToast("Please connect to metamask first!", "warning")
+          }
+        }}>
         <button
           type="button"
           disabled={!isMMConnected}
@@ -291,6 +296,8 @@ const Home: NextPage = () => {
           />
           Buy a RON
         </button>
+
+        </div>
 
         {/* <button className="" disabled={isMMConnected} onClick={web3Context}>
           connect to metamask
@@ -309,11 +316,15 @@ const Home: NextPage = () => {
         </form>
       </div> */}
       {postBuyModal && <PostBuyModal handlePostBuy={handlePostBuy} />}
-      
-
-      <div className="">tokenLeft: {tokenLeft}</div>
+      {tokenLeft && (
+        <div className="block p-6 max-w-xs bg-red-400 rounded-lg border border-red-600 shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <h5 className="text-2xl tracking-tight text-gray-900 dark:text-white">
+            Token left: <span className="font-bold">{tokenLeft}</span>
+          </h5>
+        </div>
+      )}
+      {/* <div className="">tokenLeft: {tokenLeft}</div> */}
       <ListTokens tokenOwners={tokenOwners} />
-
     </div>
   );
 };
