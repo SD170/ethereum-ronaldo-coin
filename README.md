@@ -64,7 +64,7 @@ The directory is divided into two folders. `/truffle` holds all files regarding 
 
 ---
 
-![RON-logo](./client//public/RON-logo.gif)
+![RON-logo](./client//public/RON-logo.gif){ width: 200px; }
 
 ### Thanks for checking out
 
