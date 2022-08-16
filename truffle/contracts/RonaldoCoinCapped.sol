@@ -36,7 +36,7 @@ contract RonaldoCoinCapped is ERC20 {
         );
         require(
             balanceOf(tokenOwner) > 0,
-            "All 10 RonaldoCoin are minted. You're late."
+            "All 20 RonaldoCoin are minted. You're late."
         );
         require(
             balanceOf(msg.sender) == 0,
