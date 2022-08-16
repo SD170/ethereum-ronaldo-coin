@@ -3,6 +3,7 @@
 
 RON is a layer 2 token(ERC-20) deployed on Ropsten(ETH) TESTNET. The smart contract is written in solidity on truffle. The dApp is built using Next.js. Redis is used as the primary datastore. Deployed on Vercel platform. Used TypeScript with React for developing the frontend.
 
+---
 
 ## Important files
 
@@ -17,6 +18,7 @@ The directory is divided into two folders. `/truffle` holds all files regarding 
 | /client/lib/redis | [`Redis schema using Redis OM.`](https://github.com/SD170/ethereum-ronaldo-coin/tree/next-js/client/lib/redis) |
 | /client/pages/api | [`API to communicate with redis cloud.`](https://github.com/SD170/ethereum-ronaldo-coin/tree/next-js/client/pages/api) |
 
+---
 
 ## Usage
 1) Clone the project.
@@ -51,7 +53,7 @@ The directory is divided into two folders. `/truffle` holds all files regarding 
     npm start
     ```
 
-
+---
 
 ## Tech-stack
 
@@ -60,5 +62,10 @@ The directory is divided into two folders. `/truffle` holds all files regarding 
 - [Next.Js](https://nextjs.org/) - For dApp development
 - [Vercel](https://vercel.com/) - For dApp deployment
 
+---
+
+![RON-logo](./client//public/RON-logo.gif)
 
 ### Thanks for checking out
+
+
