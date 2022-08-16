@@ -5,13 +5,11 @@ const createWeb3Instance = async () => {
         throw new Error("Please install Metamask");
     }
     const web3Instance = new Web3(window.ethereum);
-    // console.log(web3);
     try {
-        // @ts-ignore
-        const accountsInstance = await web3.currentProvider.request({
+        //@ts-ignore
+        const accountsInstance = await web3Instance.currentProvider!.request({
             method: "eth_requestAccounts"
         });
-        // console.log(web3Instance);
         if (accountsInstance.length > 0) {
             return { web3Instance, accountsInstance };
 
@@ -21,7 +19,7 @@ const createWeb3Instance = async () => {
         }
 
     } catch (error: any) {
-        throw new Error(`error getting accounts on Meamask: ${error}`);
+        throw new Error(`Please click on the Meamask extension and connect`);
     }
 
 

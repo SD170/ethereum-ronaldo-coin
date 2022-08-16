@@ -7,11 +7,10 @@ interface EachTokenProps {
 
 const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
   const formatDate = (dateStr: string) => {
-    let finalStr = "??/??/???? ??:??"
-    if(!dateStr){
+    let finalStr = "??/??/???? ??:??";
+    if (!dateStr) {
       return finalStr;
     }
-    console.log(new Date(dateStr));
     const date = new Date(parseInt(dateStr)),
       year = date.getFullYear(),
       month = date.getMonth() + 1, // months are zero indexed
@@ -35,8 +34,18 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
       minuteFormatted +
       morning;
 
-
     return finalStr;
+  };
+
+  const formatAddress = (address: string) => {
+    if (!address) {
+      return "";
+    }
+    let final =
+      address.substring(0, 6) +
+      "*****" +
+      address.substring(address.length - 6, address.length);
+    return final;
   };
 
   return (
@@ -50,7 +59,7 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
           />
         </div>
 
-        <div className="px-5 pb-5">
+        <div className="px-5 py-2">
           <div className="flex my-1">
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
               Owner
@@ -65,7 +74,7 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
             </span>
             {/* x-scroll */}
             <h5 className="text-xl font-thin tracking-tight text-gray-900 dark:text-white overflow-hidden ">
-              {tokenDetails.address}
+              {formatAddress(tokenDetails.address!)}
             </h5>
           </div>
           <div className="flex my-1">
@@ -86,12 +95,6 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
           </div>
         </div>
       </div>
-      {/* <div className="">
-        {tokenDetails.entityId} - 
-        {tokenDetails.address} -
-        {tokenDetails.name} -
-        {tokenDetails.note} -
-      </div> */}
     </>
   );
 };

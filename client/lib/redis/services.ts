@@ -4,20 +4,16 @@ import { connect, client } from "./redisConfig";
 
 
 
-// @ts-ignore
-export const createOwner = async (data) => {
+export const createOwner = async (data:any) => {
     // connect if not connected
     await connect();
 
 
-    // @ts-ignore
     const repository = client.fetchRepository(schema)
     data.createdAt = Date.now();
     const owner = repository.createEntity(data);
     
     
-    // console.log("owner",owner);
-    // id = <uniqueId>
     const id = await repository.save(owner);
 
 
@@ -32,7 +28,6 @@ export const getOwners = async () => {
     // connect if not connected
     await connect();
 
-    // @ts-ignore
     const repository = client.fetchRepository(schema);
     // need to build index to search [drop index if the schema is updated]
     try {
@@ -45,8 +40,6 @@ export const getOwners = async () => {
     
 
     const owners = await repository.search().sortDescending('createdAt').return.all();
-    // @ts-ignore
-    console.log(owners.map((o)=>o.createdAt));
 
     return owners;
 }

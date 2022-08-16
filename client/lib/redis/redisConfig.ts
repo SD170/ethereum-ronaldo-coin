@@ -4,11 +4,11 @@ import { Client, Entity, Schema, Repository } from "redis-om";
 const client = new Client();
 
 const connect = async () => {
-    console.log("sssssssssssssssssssssssssssssssssssssssssssss");
-    console.log("sssssssssssssssssssssssssssssssssssssssssssss");
-    console.log("client.isOpen() ", client.isOpen());
-    console.log("sssssssssssssssssssssssssssssssssssssssssssss");
-    console.log("sssssssssssssssssssssssssssssssssssssssssssss");
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("Redis client connected ", client.isOpen());
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     if (!client.isOpen()) {
         try {
             await client.open(process.env.REDIS_URL);

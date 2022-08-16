@@ -1,6 +1,7 @@
 import Web3 from 'web3';
-// @ts-ignore
-const getEstimations = async (web3: Web3, accounts: Array<string>, tokenContract) => {
+import { Contract } from "web3-eth-contract";
+
+const getEstimations = async (web3: Web3, accounts: Array<string>, tokenContract:Contract) => {
     try {
         // current gas price:
         const gasPrice = await web3.eth.getGasPrice();

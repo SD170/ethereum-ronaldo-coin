@@ -7,22 +7,6 @@ interface EachTokenProps {
 }
 
 const ListTokens: FunctionComponent<EachTokenProps> = ({tokenOwners}) => {
-  // const [tokenOwners, setTokenOwners] = useState<ownerDataRedis[]>([]);
-
-  // const getAllOwners = useCallback(async () => {
-  //   const res = await fetch("/api/getOwners", {
-  //     method: "GET"
-  //   });
-
-  //   const result = await res.json();
-  //   // console.log("result of getAllOwners api", result);
-  //   setTokenOwners(result);
-  // }, []); // setTokenOwners is already memoised as setState()'s are as per react. So no need to include it in the dependency array
-
-  // useEffect(() => {
-  //   // console.log("tokenOwners",tokenOwners);
-  //   getAllOwners();
-  // }, [getAllOwners]);
 
   return (
     <div className="flex flex-wrap justify-around">

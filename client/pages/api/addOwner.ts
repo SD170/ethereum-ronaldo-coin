@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ownerData } from "../../interfaces";
 import { createOwner } from "../../lib/redis/services";
 
 
