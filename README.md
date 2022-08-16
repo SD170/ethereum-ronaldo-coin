@@ -3,6 +3,7 @@
 
 RON is a layer 2 token(ERC-20) deployed on Ropsten(ETH) TESTNET. The smart contract is written in solidity on truffle. The dApp is built using Next.js. Redis is used as the primary datastore. Deployed on Vercel platform. Used TypeScript with React for developing the frontend.
 
+Wrote the ERC20 interface from EIP‐20: Token Standard. Created methods to imitate an Initial Coin Offering (ICO), where tokens are minted and sent automatically if ether transactions are made.
 ---
 
 ## Important files

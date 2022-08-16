@@ -8,9 +8,6 @@ const PostBuyModal: FunctionComponent<PostBuyModalProps> = ({
 }) => {
   return (
     <>
-      {/* <!-- Modal toggle --> */}
-
-      {/* <!-- Main modal --> */}
       <div
         id="authentication-modal"
         tabIndex={-1}
