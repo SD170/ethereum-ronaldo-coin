@@ -108,7 +108,8 @@ const Home: NextPage = () => {
     });
 
     const result = await res.json();
-    console.log("result of getAllOwners api", result);
+    console.log("result of getAllOwners api", result[0].createdAt );
+    console.log("result of getAllOwners api", new Date(result[0].createdAt));
     setTokenOwners(result);
 
     // setTokenOwners([
@@ -261,11 +262,49 @@ const Home: NextPage = () => {
       {/* <Toast message="sss" /> */}
       <ToastContainer />
       <div className="flex justify-center my-5">
+        {/* {!tokenLeft && (
+          <div className="block p-6 max-w-xs bg-white rounded-lg border border-red-600 shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 ">
+            <h5 className="text-2xl tracking-tight text-gray-900 dark:text-white">
+              <div className="flex items-center">
+                <img
+                  src="/RON-logo.gif"
+                  // className="mr-3 h-6 sm:h-9"
+                  className="mr-2 -ml-1 w-10 h-11"
+                  alt="Flowbite Logo"
+                  //   width={36}
+                  //   height={24}
+                />{" "}
+                <div className="">left:</div>{" "}
+                <span className="font-bold">{tokenLeft}</span>
+              </div>
+            </h5>
+          </div>
+        )} */}
+        <span>
+          <button
+            type="button"
+            className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 hover:cursor-default"
+          >
+            <span className="flex items-center">
+              <img
+                src="/RON-logo.gif"
+                // className="mr-3 h-6 sm:h-9"
+                className="mr-2 -ml-1 w-10 h-11"
+                alt="Flowbite Logo"
+                //   width={36}
+                //   height={24}
+              />
+              <div className="">left: </div>
+              <span className="font-bold text-red-600">{tokenLeft?tokenLeft:"??"}</span>
+            </span>
+          </button>
+        </span>
+
         <button
           type="button"
           disabled={isMMConnected}
           onClick={web3Context}
-          className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed"
+          className={`shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed ${!isMMConnected && ' !border-red-600'}`}
         >
           <Image
             src="/metamask.svg"
@@ -273,31 +312,32 @@ const Home: NextPage = () => {
             width={72}
             height={50}
           />
-          {isMMConnected?<>Connected....</>:<>Connect with MetaMask</>}
+          {isMMConnected ? <>Connected....</> : <>Connect with MetaMask</>}
         </button>
-        <div onClick={()=>{
-          if (!isMMConnected){
-            showToast("Please connect to metamask first!", "warning")
-          }
-        }}>
-        <button
-          type="button"
-          disabled={!isMMConnected}
-          onClick={buyToken}
-          className="shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed "
+        <span
+          onMouseEnter={() => {
+            if (!isMMConnected) {
+              showToast("Please connect to metamask first!", "warning");
+            }
+          }}
         >
-          <img
-            src="/RON-logo.gif"
-            // className="mr-3 h-6 sm:h-9"
-            className="mr-2 -ml-1 w-10 h-11"
-            alt="Flowbite Logo"
-            //   width={36}
-            //   height={24}
-          />
-          Buy a RON
-        </button>
-
-        </div>
+          <button
+            type="button"
+            disabled={!isMMConnected}
+            onClick={buyToken}
+            className={`shadow-sm text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2 disabled:cursor-not-allowed ${isMMConnected && ' !border-red-600'}`}
+          >
+            <img
+              src="/RON-logo.gif"
+              // className="mr-3 h-6 sm:h-9"
+              className="mr-2 -ml-1 w-10 h-11"
+              alt="Flowbite Logo"
+              //   width={36}
+              //   height={24}
+            />
+            Buy a RON
+          </button>
+        </span>
 
         {/* <button className="" disabled={isMMConnected} onClick={web3Context}>
           connect to metamask
@@ -316,13 +356,7 @@ const Home: NextPage = () => {
         </form>
       </div> */}
       {postBuyModal && <PostBuyModal handlePostBuy={handlePostBuy} />}
-      {tokenLeft && (
-        <div className="block p-6 max-w-xs bg-red-400 rounded-lg border border-red-600 shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <h5 className="text-2xl tracking-tight text-gray-900 dark:text-white">
-            Token left: <span className="font-bold">{tokenLeft}</span>
-          </h5>
-        </div>
-      )}
+
       {/* <div className="">tokenLeft: {tokenLeft}</div> */}
       <ListTokens tokenOwners={tokenOwners} />
     </div>

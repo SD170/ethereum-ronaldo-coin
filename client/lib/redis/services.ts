@@ -12,8 +12,9 @@ export const createOwner = async (data) => {
 
     // @ts-ignore
     const repository = client.fetchRepository(schema)
-    // console.log("data",data);
+    data.createdAt = Date.now();
     const owner = repository.createEntity(data);
+    
     
     // console.log("owner",owner);
     // id = <uniqueId>
@@ -44,6 +45,8 @@ export const getOwners = async () => {
     
 
     const owners = await repository.search().sortDescending('createdAt').return.all();
+    // @ts-ignore
+    console.log(owners.map((o)=>o.createdAt));
 
     return owners;
 }

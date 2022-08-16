@@ -12,6 +12,6 @@ export type ownerDataRedis = {
     name?: string | null,
     note?: string | null,
     entityId?: string
-    createdAt?: string
+    createdAt?: string,
 
 }
