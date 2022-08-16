@@ -133,7 +133,6 @@ const Home: NextPage = () => {
   }, [tokenContract, web3, accounts]);
 
   const getCoinLeft = useCallback(async () => {
-    console.log("getCoinLeft");
     if (tokenContract) {
       const tokenLeftCount = await tokenContract.methods.getTokenLeft().call();
       setTokenLeft(tokenLeftCount);
@@ -167,7 +166,7 @@ const Home: NextPage = () => {
 
   const showToast = (message: string, type: string = "info") => {
     const options: ToastOptions = {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,

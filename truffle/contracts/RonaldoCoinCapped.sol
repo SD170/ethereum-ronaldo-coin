@@ -14,7 +14,7 @@ contract RonaldoCoinCapped is ERC20 {
         ERC20(tokenName, tokenSymbol)
     {
         tokenOwner = msg.sender;
-        uint8 tokenMinted = 100; // I want to keep the cap to 10. Change it if you want to mint more
+        uint8 tokenMinted = 20; // I want to keep the cap to 10. Change it if you want to mint more
         mintToken(msg.sender, tokenMinted * 10**uint256(decimals()));
     }
 
@@ -38,10 +38,10 @@ contract RonaldoCoinCapped is ERC20 {
             balanceOf(tokenOwner) > 0,
             "All 10 RonaldoCoin are minted. You're late."
         );
-        // require(
-        //     balanceOf(msg.sender) == 0,
-        //     "You can own at max 1 RonaldoCoin, not more. Don't be greedy"
-        // );
+        require(
+            balanceOf(msg.sender) == 0,
+            "You can own at max 1 RonaldoCoin, not more. Don't be greedy"
+        );
 
         makeTransfer(tokenOwner, msg.sender, 1 * 10**uint256(decimals()));
         // we'll send 1 coin, thich is represented by n * 10**uint256(decimals()) internally. n=1
