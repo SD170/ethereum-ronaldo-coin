@@ -101,7 +101,7 @@ const Home: NextPage = () => {
           method: "eth_sendTransaction",
           params
         });
-
+        showToast("Wait a few seconds", "info");
         web3?.eth.subscribe(
           "logs",
           {
