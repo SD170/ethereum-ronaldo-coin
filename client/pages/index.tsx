@@ -10,7 +10,7 @@ import getEstimations from "../lib/getEstimations";
 import ListTokens from "../components/ListTokens";
 import { ownerDataRedis } from "../interfaces";
 import getContractInstance from "../lib/getContractInstance";
-import contractInterface from "../../truffle/build/contracts/RonaldoCoinCapped.json";
+import contractInterface from "../contracts/RonaldoCoinCapped.json";
 import Navbar from "../components/Navbar";
 // import { closeConnection } from '../lib/redis/services';
 import { ToastContainer, toast, ToastOptions, Flip } from "react-toastify";
