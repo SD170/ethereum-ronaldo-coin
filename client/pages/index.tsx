@@ -240,7 +240,7 @@ const Home: NextPage = () => {
                 src="/RON-logo.gif"
                 // className="mr-3 h-6 sm:h-9"
                 className="mr-2 -ml-1 w-10 h-11"
-                alt="Flowbite Logo"
+                alt="RON logo"
                 //   width={36}
                 //   height={24}
               />
@@ -287,7 +287,7 @@ const Home: NextPage = () => {
               src="/RON-logo.gif"
               // className="mr-3 h-6 sm:h-9"
               className="mr-2 -ml-1 w-10 h-11"
-              alt="Flowbite Logo"
+              alt="RON Logo"
               //   width={36}
               //   height={24}
             />
