@@ -50,7 +50,7 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
 
   return (
     <>
-      <div className="w-full max-w-xs bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 m-10 border border-gray-200 hover:bg-gray-100">
+      <div className="w-full max-w-xs bg-white rounded-lg shadow-md m-10 border border-gray-200 hover:bg-gray-100">
         <div className="flex  justify-center border border-b-black-200">
           <img
             className="p-8 rounded-t-lg w-40 "
@@ -61,35 +61,35 @@ const EachToken: FunctionComponent<EachTokenProps> = ({ tokenDetails }) => {
 
         <div className="px-5 py-2">
           <div className="flex my-1">
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded  ml-3">
               Owner
             </span>
-            <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden">
+            <h5 className="text-xl font-semibold tracking-tight text-gray-900 overflow-hidden">
               {tokenDetails.name}
             </h5>
           </div>
           <div className="flex my-1">
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded   ml-3">
               Address
             </span>
             {/* x-scroll */}
-            <h5 className="text-xl font-thin tracking-tight text-gray-900 dark:text-white overflow-hidden ">
+            <h5 className="text-xl font-thin tracking-tight text-gray-90 overflow-hidden ">
               {formatAddress(tokenDetails.address!)}
             </h5>
           </div>
           <div className="flex my-1">
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded  ml-3">
               Note
             </span>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
+            <p className="font-normal text-gray-700">
               {tokenDetails.note}
             </p>
           </div>
           <div className="flex my-1">
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-1 rounded   ml-3">
               Purchased
             </span>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
+            <p className="font-normal text-gray-700 ">
               {formatDate(tokenDetails.createdAt!)}
             </p>
           </div>
