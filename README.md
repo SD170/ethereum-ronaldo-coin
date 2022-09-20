@@ -1,6 +1,8 @@
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SD170/ethereum-ronaldo-coin)
 # Ethereum Ronaldo Coin (RON)
 
+### Address - 0x8a0ebdffCE83A68bef140Ca07b061E93A6f88074
+
 RON is a layer 2 token(ERC-20) deployed on Ropsten(ETH) TESTNET. The smart contract is written in solidity on truffle. The dApp is built using Next.js. Redis is used as the primary datastore. Deployed on Vercel platform. Used TypeScript with React for developing the frontend.
 
 Wrote the ERC20 interface from EIP‐20: Token Standard. Created methods to imitate an Initial Coin Offering (ICO), where tokens are minted and sent automatically if ether transactions are made.
